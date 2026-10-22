@@ -1,0 +1,26 @@
+# Python
+__pycache__/
+*.py[oc]
+build/
+dist/
+*.egg-info/
+.venv/
+venv/
+env/
+
+# Data & Models
+data/raw/*
+data/processed/*
+!data/**/.gitkeep
+models/*
+!models/.gitkeep
+*.pkl
+*.joblib
+*.pt
+*.onnx
+
+# Jupyter & IDE
+.ipynb_checkpoints/
+.vscode/
+.idea/
+.DS_Store
