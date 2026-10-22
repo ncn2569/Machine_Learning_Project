@@ -5,7 +5,7 @@
 project_diabetes/
 ├── data/
 │   ├── raw/                 # Dữ liệu gốc tải từ Kaggle
-│   └── processed/           # 2 bộ data (full 21 biến & selected 10-12 biến)
+│   └── processed/           # 2 bộ data (full biến & selected biến)
 ├── notebooks/
 │   ├── 01_eda_feature_selection.ipynb   # Người 1
 │   ├── 02_model_A.ipynb                 # Người 2
@@ -16,13 +16,13 @@ project_diabetes/
 │   └── metrics.py           # Script metric chung (Người 4 viết sớm)
 ├── models/                  # Checkpoints mô hình (.pkl, .joblib, .pt)
 ├── slides/                  # File slide thuyết trình
-├── requirements.txt         # Thư viện pip truyền thống
+├── requirements.txt
 └── README.md
 ```
 
 ## Hướng dẫn cài đặt môi trường (Pip truyền thống)
 ```bash
-python3 -m venv venv
+python -m venv venv
 source venv/bin/activate  # Trên Windows: venv\Scripts\activate
 pip install -r requirements.txt
 ```
