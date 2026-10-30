@@ -2,7 +2,7 @@
 
 Thư mục này chứa toàn bộ dữ liệu gốc (`data/raw/`) và 2 bộ dữ liệu sạch đã chọn lọc đặc trưng (`data/processed/`) phục vụ bài toán **Hệ thống Cảnh báo sớm Nguy cơ mắc bệnh Tiểu đường dựa trên Chỉ số Sức khỏe và Thói quen Sinh hoạt** (Học phần CO3117 - Học Máy).
 
-> **Lưu ý Git:** Hai bộ dữ liệu sạch bàn giao trong `data/processed/` (`diabetes_full.csv` và `diabetes_selected.csv`) **đã được đưa sẵn lên Git** để các thành viên pull về huấn luyện mô hình ngay. Riêng 3 tệp dữ liệu thô dung lượng lớn trong `data/raw/` vẫn được bỏ qua trong `.gitignore` (chỉ cần tải từ Kaggle đặt vào `data/raw/` nếu muốn chạy lại từ đầu `notebooks/01_eda_feature_selection.ipynb`).
+> **Lưu ý Git:** Toàn bộ 3 tệp dữ liệu thô trong `data/raw/` và 2 bộ dữ liệu sạch bàn giao trong `data/processed/` (`diabetes_full.csv`, `diabetes_selected.csv`) **đều đã được đưa sẵn lên Git** để các thành viên pull về chạy lại notebook EDA hoặc huấn luyện mô hình ngay mà không cần tải thủ công từ Kaggle.
 
 ---
 

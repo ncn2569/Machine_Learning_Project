@@ -9,7 +9,6 @@ venv/
 env/
 
 # Data & Models
-data/raw/*
 !data/**/.gitkeep
 models/*
 !models/.gitkeep
