@@ -15,7 +15,7 @@ project_diabetes/
 │   └── 04_evals_mlp_ensemble.ipynb      # Người 4
 ├── src/
 │   ├── __init__.py
-│   └── metrics.py           # Script metric chung (Người 4 viết sớm)
+│   └── metrics.py           # Script metric chung
 ├── models/                  # Checkpoints mô hình (.pkl, .joblib, .pt)
 ├── slides/                  # File slide thuyết trình
 ├── requirements.txt
