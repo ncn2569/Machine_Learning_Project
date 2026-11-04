@@ -24,9 +24,8 @@ Cả 3 tệp dữ liệu thô đều được tác giả Alex Teboul trích xu�
   - **`1.0` — Tiền tiểu đường (`Prediabetes`)** *(hoặc đường huyết cận biên)*: **`4,631` mẫu (`1.83%`)**.
   - **`2.0` — Mắc bệnh Tiểu đường (`Diabetes`)**: **`35,346` mẫu (`13.93%`)**.
 - **Đặc điểm chất lượng dữ liệu bên trong:**
-  - Có **`23,899` dòng trùng lặp hoàn toàn** (`9.42%` tổng dữ liệu) trên cả 22 cột.
-  - Nếu chỉ xét 21 cột đặc trưng đầu vào, có `227,908` tổ hợp đặc trưng duy nhất (`25,772` dòng bị trùng tổ hợp đặc trưng), trong đó có **`1,834` tổ hợp xung đột nhãn** (cùng 21 chỉ số giống hệt nhau nhưng xuất hiện ở nhiều lớp bệnh khác nhau).
-  - Biến `BMI` trải từ `12.0` đến `98.0` (trung bình `28.38`, trung vị `27.0`), chứa **`599` bản ghi dị thường `BMI >= 70`** có tỷ lệ tiểu đường đột ngột rơi từ `42.8%` về `13.5%` do lỗi quy đổi đơn vị/nhập liệu.
+  - Do bộ khảo sát thu thập 21 biến rời rạc trên quần thể lớn (`253,680` cá thể khảo sát độc lập), có `227,908` tổ hợp đặc trưng duy nhất, trong đó xuất hiện **`1,834` tổ hợp xung đột nhãn** (cùng 21 chỉ số giống hệt nhau nhưng xuất hiện ở nhiều lớp bệnh khác nhau).
+  - Biến `BMI` trải từ `12.0` đến `98.0` (trung bình `28.38`, trung vị `27.0`), chứa **`599` bản ghi dị thường `BMI >= 70`** có tỷ lệ nguy cơ tiểu đường đột ngột rơi xuống thấp bất thường (`15.5%` khi gộp Tiền tiểu đường + Tiểu đường, hoặc `13.5%` nếu chỉ tính Tiểu đường) do lỗi quy đổi đơn vị/nhập liệu.
 - **Vai trò trong dự án:** **ĐƯỢC CHỌN LÀM NGUỒN CHÍNH** vì là tệp duy nhất tách bạch rõ `4,631` ca **Tiền tiểu đường (`1.0`)**, cho phép nhóm gộp `1.0` + `2.0` thành nhóm **Có nguy cơ / Mắc bệnh (`1`)** đúng với yêu cầu **Hệ thống Cảnh báo sớm**.
 
 ---
@@ -40,7 +39,7 @@ Cả 3 tệp dữ liệu thô đều được tác giả Alex Teboul trích xu�
   - **`1.0` — Tiểu đường:** **`35,346` mẫu (`13.93%`)**.
 - **Phát hiện lỗi ánh xạ nhãn quan trọng:**
   - Mặc dù tài liệu mô tả trên Kaggle của tác giả ghi *"0 is for no diabetes, and 1 is for prediabetes or diabetes"*, kiểm tra chéo (`pd.crosstab`) cho thấy thực tế tệp này đã **gộp toàn bộ `4,631` bệnh nhân Tiền tiểu đường (`Diabetes_012 == 1.0`) vào lớp `0.0`** (`213,703 + 4,631 = 218,334`), và chỉ giữ `Diabetes_012 == 2.0` làm lớp `1.0` (`35,346`).
-  - Do gộp `1.0` vào `0.0`, số bản ghi trùng lặp hoàn toàn tăng nhẹ lên **`24,206` dòng (`9.54%`)** và có **`1,566` tổ hợp đặc trưng xung đột nhãn** (liên quan `5,218` dòng).
+  - Khi xét trên 21 cột đặc trưng đầu vào, tệp này có **`1,566` tổ hợp đặc trưng xung đột nhãn** (liên quan `5,218` dòng).
 - **Vai trò trong dự án:** **Chỉ dùng để đối chiếu trong bước EDA**, không dùng làm nguồn huấn luyện vì việc gán nhãn `0` (Khỏe mạnh) cho `4,631` người Tiền tiểu đường (vốn có `HighBP = 62.9%`, `HighChol = 62.1%`, `BMI = 30.72`) làm nhiễu biên quyết định của hệ thống cảnh báo sớm.
 
 ---
@@ -54,7 +53,7 @@ Cả 3 tệp dữ liệu thô đều được tác giả Alex Teboul trích xu�
 - **Cách tệp này được tạo ra & 4 nhược điểm kỹ thuật cần lưu ý:**
   1. **Cấu trúc lấy mẫu giảm (Random Undersampling):** Tác giả giữ nguyên 100% `35,346` ca Tiểu đường (`Diabetes_012 == 2.0`) và lấy ngẫu nhiên `35,346` mẫu từ `218,334` mẫu lớp `0.0` của tệp `diabetes_binary` (bỏ đi `182,988` mẫu khỏe mạnh, tức đánh mất `83.8%` thông tin lớp đa số).
   2. **Lẫn bệnh nhân Tiền tiểu đường trong lớp `0.0`:** Vì lấy mẫu từ lớp `0.0` của `diabetes_binary`, lớp `0.0` của tệp `5050split` bị lẫn ít nhất **`680` hồ sơ đặc trưng riêng của bệnh nhân Tiền tiểu đường** mang nhãn "Không bệnh".
-  3. **Dữ liệu xếp thứ tự đơn điệu theo nhãn (Chưa xáo trộn):** `35,346` dòng đầu tiên (index `0` $\rightarrow$ `35,345`) hoàn toàn là nhãn `0.0`; `35,346` dòng cuối (index `35,346` $\rightarrow$ `70,691`) hoàn toàn là nhãn `1.0`. Vẫn còn `1,635` dòng trùng lặp (`2.31%`), `408` tổ hợp xung đột nhãn và `154` dòng ngoại lai `BMI >= 70`.
+  3. **Dữ liệu xếp thứ tự đơn điệu theo nhãn (Chưa xáo trộn):** `35,346` dòng đầu tiên (index `0` $\rightarrow$ `35,345`) hoàn toàn là nhãn `0.0`; `35,346` dòng cuối (index `35,346` $\rightarrow$ `70,691`) hoàn toàn là nhãn `1.0`. Tệp vẫn còn `408` tổ hợp xung đột nhãn và `154` dòng ngoại lai `BMI >= 70`.
   4. **Lệch phân phối quần thể (Prior & Covariate Shift):** Do tỷ lệ người bệnh bị đẩy từ `13.93%` lên `50.00%`, trung bình toàn bộ các biến bệnh nền trong tệp này cao bất thường so với dân số thật (`HighBP` vọt từ `42.90%` lên `56.35%`, `HighChol` từ `42.41%` lên `52.57%`, `BMI` từ `28.38` lên `29.86`, `GenHlth` từ `2.51` lên `2.84`).
 - **Vai trò trong dự án:** **Không sử dụng để huấn luyện/đánh giá chính thức**, vì đánh giá trên tập Test 50:50 sẽ làm phóng đại giả tạo Precision và PR-AUC, đồng thời gây báo động giả (False Positive) hàng loạt khi triển khai thực tế.
 
@@ -62,25 +61,24 @@ Cả 3 tệp dữ liệu thô đều được tác giả Alex Teboul trích xu�
 
 ## 2. Quy Trình Làm Sạch Tạo Ra 2 Bộ Dữ Liệu Bàn Giao (`data/processed/`)
 
-Từ tệp nguồn **`diabetes_012_health_indicators_BRFSS2015.csv`** (`253,680` dòng), notebook `notebooks/01_eda_feature_selection.ipynb` thực hiện 4 bước làm sạch nghiêm ngặt (không chia sẵn Train/Test):
+Từ tệp nguồn **`diabetes_012_health_indicators_BRFSS2015.csv`** (`253,680` dòng), notebook `notebooks/01_eda_feature_selection.ipynb` thực hiện 3 bước tiền xử lý và làm sạch nghiêm ngặt (không chia sẵn Train/Test):
 
-1. **Gộp nhãn theo Phương án A (Chuẩn Cảnh báo sớm):**
+1. **Định nghĩa nhãn mục tiêu nhị phân (Chuẩn Cảnh báo sớm):**
    - `Diabetes_binary = 0`: Không mắc bệnh (`Diabetes_012 == 0.0` $\rightarrow$ `213,703` mẫu, `84.24%`).
    - `Diabetes_binary = 1`: Tiền tiểu đường + Tiểu đường (`Diabetes_012 in {1.0, 2.0}` $\rightarrow$ `4,631 + 35,346 = 39,977` mẫu, `15.76%`).
 2. **Lọc bỏ ngoại lai lỗi nhập liệu `BMI >= 70`:** Loại bỏ `599` mẫu nhiễu (`BMI` từ `70` đến `98`), giữ miền giá trị y sinh hợp lệ `BMI` $\in [12, 69]$, còn `253,081` mẫu.
-3. **Khử trùng lặp hoàn toàn (`drop_duplicates`):** Loại bỏ `23,968` bản ghi trùng lặp hoàn toàn để chống rò rỉ dữ liệu khi chia Train/Test về sau, còn `229,113` mẫu.
-4. **Giải quyết xung đột nhãn biên quyết định:** Loại bỏ `1,804` bản ghi âm tính có cùng 21 giá trị đặc trưng trùng khít 100% với bản ghi dương tính (ưu tiên giữ nhãn `1` để làm sạch ranh giới quyết định và bảo toàn độ nhạy cảnh báo sớm), đồng thời ép kiểu toàn bộ cột về số nguyên (`int8` / `int16`).
+3. **Giải quyết xung đột nhãn biên quyết định:** Loại bỏ `4,096` bản ghi âm tính (`nhãn 0`) có cùng 21 giá trị đặc trưng trùng khít 100% với bản ghi dương tính (`nhãn 1`) — ưu tiên giữ nhãn `1` để làm sạch ranh giới quyết định và bảo toàn độ nhạy cảnh báo sớm (trong khi vẫn giữ nguyên các bản ghi cùng nhãn không xung đột), đồng thời ép kiểu toàn bộ cột về số nguyên (`int8` / `int16`).
 
 ---
 
 ## 3. Chi Tiết 2 Tệp Dữ Liệu Sạch Bàn Giao Trong `data/processed/`
 
-Thư mục `data/processed/` chỉ gồm đúng **2 tệp chuẩn** theo yêu cầu phân công (không chia sẵn Train/Test; hai tệp chứa **cùng `227,309` bệnh nhân theo đúng thứ tự dòng 1-1**):
+Thư mục `data/processed/` chỉ gồm đúng **2 tệp chuẩn** theo yêu cầu phân công (không chia sẵn Train/Test; hai tệp chứa **cùng `248,985` bệnh nhân theo đúng thứ tự dòng 1-1**):
 
 | Tên tệp | Kích thước (`Dòng × Cột`) | Dung lượng | Biến mục tiêu (Cột 0) | Số biến đặc trưng ($X$) | Phân phối nhãn sạch | Kiểm định chất lượng |
 | :--- | :---: | :---: | :---: | :---: | :--- | :--- |
-| **`diabetes_full.csv`** | `227,309 × 22` | `10.12 MB` | `Diabetes_binary` | **21 biến đầy đủ** | • Lớp `0`: **187,745** (`82.59%`)<br>• Lớp `1`: **39,564** (`17.41%`) | `0` NaN, `0` Inf, `0` dòng trùng lặp, `0` xung đột nhãn trên 21 biến, `BMI` $\in [12, 69]$. |
-| **`diabetes_selected.csv`** | `227,309 × 14` | `6.65 MB` | `Diabetes_binary` | **13 biến chọn lọc** | • Lớp `0`: **187,745** (`82.59%`)<br>• Lớp `1`: **39,564** (`17.41%`) | Khớp 100% từng dòng và nhãn với `diabetes_full.csv` (giảm 38% số chiều, giữ $>91\%$ tổng độ quan trọng đặc trưng). |
+| **`diabetes_full.csv`** | `248,985 × 22` | `11.07 MB` | `Diabetes_binary` | **21 biến đầy đủ** | • Lớp `0`: **209,101** (`83.98%`)<br>• Lớp `1`: **39,884** (`16.02%`) | `0` NaN, `0` Inf, `0` xung đột nhãn trên 21 biến, `BMI` $\in [12, 69]$. |
+| **`diabetes_selected.csv`** | `248,985 × 14` | `7.27 MB` | `Diabetes_binary` | **13 biến chọn lọc** | • Lớp `0`: **209,101** (`83.98%`)<br>• Lớp `1`: **39,884** (`16.02%`) | Khớp 100% từng dòng và nhãn với `diabetes_full.csv` (giảm 38.1% số chiều, giữ $>93\%$ tổng độ quan trọng đặc trưng). |
 
 ---
 
@@ -106,16 +104,16 @@ Thư mục `data/processed/` chỉ gồm đúng **2 tệp chuẩn** theo yêu c�
 | 15 | **`HvyAlcoholConsump`** | `int8` | `{0, 1}` | ✅ | ❌ *(Lược bỏ)* | Uống rượu bia nặng (Nhiễu ngược *Sick Stopper Effect* — người bệnh phải kiêng rượu). |
 | 16 | **`Smoker`** | `int8` | `{0, 1}` | ✅ | ❌ *(Lược bỏ)* | Đã hút $\ge 100$ điếu thuốc trong đời (Tín hiệu phân tách yếu trên MI & RF Importance). |
 | 17 | **`Veggies`** | `int8` | `{0, 1}` | ✅ | ❌ *(Lược bỏ)* | Ăn rau xanh $\ge 1$ lần/ngày (Đóng góp $< 0.8\%$ Gini Importance). |
-| 18 | **`Sex`** | `int8` | `{0, 1}` | ✅ | ❌ *(Lược bỏ)* | Giới tính: `0` = Nữ, `1` = Nam (Tương quan rất thấp $|r| = 0.031$). |
-| 19 | **`Fruits`** | `int8` | `{0, 1}` | ✅ | ❌ *(Lược bỏ)* | Ăn trái cây $\ge 1$ lần/ngày ($|r| = 0.025$, tín hiệu dự báo rất yếu). |
-| 20 | **`NoDocbcCost`** | `int8` | `{0, 1}` | ✅ | ❌ *(Lược bỏ)* | Cần gặp bác sĩ trong 12 tháng qua nhưng không đi được vì chi phí ($|r| = 0.026$). |
+| 18 | **`Sex`** | `int8` | `{0, 1}` | ✅ | ❌ *(Lược bỏ)* | Giới tính: `0` = Nữ, `1` = Nam (Tương quan rất thấp $|r| = 0.033$). |
+| 19 | **`Fruits`** | `int8` | `{0, 1}` | ✅ | ❌ *(Lược bỏ)* | Ăn trái cây $\ge 1$ lần/ngày ($|r| = 0.039$, tín hiệu dự báo rất yếu). |
+| 20 | **`NoDocbcCost`** | `int8` | `{0, 1}` | ✅ | ❌ *(Lược bỏ)* | Cần gặp bác sĩ trong 12 tháng qua nhưng không đi được vì chi phí ($|r| = 0.036$). |
 | 21 | **`AnyHealthcare`** | `int8` | `{0, 1}` | ✅ | ❌ *(Lược bỏ)* | Có bảo hiểm y tế (Biến gần như hằng số: $>95\%$ bằng 1, độ quan trọng thấp nhất). |
 
 ---
 
 ## 5. Quy Ước Đọc Dữ Liệu Thống Nhất Cho Người 2, Người 3 và Người 4
 
-Vì `diabetes_full.csv` và `diabetes_selected.csv` không chia sẵn Train/Test nhưng **có cùng thứ tự `227,309` dòng**, các thành viên huấn luyện mô hình chỉ cần dùng chung tham số `test_size=0.20, stratify=y, random_state=42` là sẽ thu được **cùng một tập Test cố định** (giúp Người 4 ghép `y_prob` làm Voting/Stacking Ensemble khớp 100%):
+Vì `diabetes_full.csv` và `diabetes_selected.csv` không chia sẵn Train/Test nhưng **có cùng thứ tự `248,985` dòng**, các thành viên huấn luyện mô hình chỉ cần dùng chung tham số `test_size=0.20, stratify=y, random_state=42` là sẽ thu được **cùng một tập Test cố định** (giúp Người 4 ghép `y_prob` làm Voting/Stacking Ensemble khớp 100%):
 
 ```python
 import pandas as pd
