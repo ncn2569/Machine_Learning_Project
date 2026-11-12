@@ -18,7 +18,7 @@ Machine_Learning/
 │   ├── 02_model_A.ipynb                 # Mô hình A: Logistic Regression (Người 2)
 │   ├── 03_model_B.ipynb                 # Mô hình B: Decision Tree (Người 3)
 │   ├── 04_MLP_model.ipynb               # Baseline Deep Learning: MLP PyTorch (Người 4)
-│   └── 05_ensemble_and_evaluation.ipynb # Ensemble Learning, So sánh tổng hợp & SHAP (Người 4)
+│   └── 05_ensemble_and_evaluation.ipynb # Ensemble Learning, So sánh tổng hợp (Người 4)
 ├── src/
 │   ├── __init__.py
 │   ├── metrics.py           # Module nạp dữ liệu chuẩn, đánh giá metrics & tìm ngưỡng F2
@@ -33,7 +33,7 @@ Machine_Learning/
 
 ## 2. Cài đặt môi trường
 
-Yêu cầu môi trường: **Python $\ge 3.10$** (khuyến nghị Python 3.10 – 3.12).
+Yêu cầu môi trường: **Python $\ge 3.10$**
 
 ```bash
 # 1. Tạo môi trường ảo
@@ -77,7 +77,7 @@ Quy trình thực nghiệm được tổ chức tuần tự qua 5 Jupyter Notebo
 5. **Bước 5: Ensemble Learning & Đánh giá tổng hợp (`05_ensemble_and_evaluation.ipynb`)**
    * Nạp xác suất dự đoán từ `models/`, kết hợp theo cơ chế **Soft Voting** (Equal Voting và Weighted Voting: 0.35 LR + 0.25 DT + 0.40 MLP).
    * Tạo bảng so sánh tổng hợp 4 phương pháp trên cả 2 bộ dữ liệu (`models/all_models_comparison.csv`).
-   * Trực quan hóa đường cong ROC, đường cong Precision-Recall, Confusion Matrix và phân tích đóng góp đặc trưng bằng **SHAP**.
+   * Trực quan hóa đường cong ROC, đường cong Precision-Recall, Confusion Matrix
 
 ---
 
