@@ -76,17 +76,17 @@ Quy trình thực nghiệm được tổ chức tuần tự qua 5 Jupyter Notebo
 
 5. **Bước 5: Ensemble Learning & Đánh giá tổng hợp (`05_ensemble_and_evaluation.ipynb`)**
    * Nạp xác suất dự đoán từ `models/`, kết hợp theo cơ chế **Soft Voting** (Equal Voting và Weighted Voting: 0.35 LR + 0.25 DT + 0.40 MLP).
-   * Tạo bảng so sánh tổng hợp 4 phương pháp trên cả 2 bộ dữ liệu (`models/all_models_comparison.csv`).
-   * Trực quan hóa đường cong ROC, đường cong Precision-Recall, Confusion Matrix
+   * Tạo bảng so sánh tổng hợp 5 cấu hình trên cả 2 bộ dữ liệu (`models/all_models_comparison.csv`).
+   * Hiển thị đường cong ROC/PR, ma trận nhầm lẫn, hình so sánh Full với Selected và hình phân tích lỗi trong notebook.
 
 ---
 
 ## 4. Các thông tin quan trọng cần lưu ý
 
 * **Bộ chỉ số đánh giá cốt lõi:**
-  * Bài toán cảnh báo sớm y tế ưu tiên giảm thiểu ca bỏ sót bệnh (False Negative). Vì vậy, nhóm sử dụng **$F_2$-Score** (đặt trọng số Recall gấp đôi Precision) làm tiêu chí chính để chọn ngưỡng cắt xác suất (Optimal Threshold).
-  * Do dữ liệu mất cân bằng (tỷ lệ bệnh ~16%), nhóm theo dõi chặt chẽ **PR-AUC (Precision-Recall AUC)** và **ROC-AUC** thay vì chỉ dựa vào Accuracy.
+  * Bài toán cảnh báo sớm y tế ưu tiên giảm thiểu ca bỏ sót bệnh (False Negative). Vì vậy, nhóm sử dụng **$F_2$-Score** (ưu tiên Recall hơn Precision) làm tiêu chí chính để chọn ngưỡng cắt xác suất (Optimal Threshold).
+  * Do dữ liệu mất cân bằng (tỷ lệ bệnh ~16%), nhóm theo dõi **Average Precision (AP, cột PR_AUC)** và **ROC-AUC** thay vì chỉ dựa vào Accuracy.
 * **Tính nhất quán của dữ liệu Test:**
-  * Tất cả các mô hình dùng chung hàm `load_split_data` từ `src/metrics.py` (Stratified Split 80:20, `random_state=42`) để đảm bảo tập Test hoàn toàn độc lập và giống nhau 100% giữa các thực nghiệm.
+  * Tất cả các mô hình dùng chung hàm `load_split_data` từ `src/metrics.py` (Stratified Split 80:20, `random_state=42`) để so sánh trên cùng các dòng khảo sát. Report mô tả nguồn chọn ngưỡng theo từng cấu hình.
 * **Tái hiện nhanh kết quả:**
-  * Thư mục `models/` chứa sẵn xác suất dự đoán kiểm thử (`.npy`), cho phép chạy trực tiếp notebook `05_ensemble_and_evaluation.ipynb` để tái hiện bảng so sánh và đồ thị mà không cần phải huấn luyện lại từ đầu.
+  * Chạy notebook 05 từ thư mục `notebooks/` khi đã có checkpoint LR/DT, điểm Test của ba mô hình và điểm Validation của MLP trong `models/`. Nếu thiếu các tệp này, chạy notebook 02–04 để tạo chúng.
