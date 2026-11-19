@@ -1,0 +1,14 @@
+.venv/
+venv/
+env/
+.git/
+.gitignore
+.vscode/
+.idea/
+.ipynb_checkpoints/
+__pycache__/
+*.py[cod]
+.DS_Store
+ML_report/
+slides/
+Phan_Cong_Nhiem_Vu_BTL_ML.docx
