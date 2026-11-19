@@ -33,7 +33,6 @@ Machine_Learning/
 ├── models/                              # Checkpoints (.joblib, .pt), xác suất (.npy/.csv) & bảng tổng hợp (.csv)
 ├── slides/                              # Slide thuyết trình nhóm
 ├── requirements.txt                     # Danh sách thư viện Python (pip)
-├── environment.yml                      # Cấu hình môi trường Conda
 ├── Dockerfile                           # Cấu hình Docker để tái hiện môi trường độc lập
 ├── .dockerignore
 └── README.md                            # Tài liệu hướng dẫn cài đặt, chạy code & ghi chú tái hiện
